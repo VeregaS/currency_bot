@@ -1,8 +1,10 @@
 import sqlite3
 from aiogram import types
 
-valutes = ['AUD', 'AZN', 'BYN', 'USD', 'JPY',
-           'DKK', 'AMD', 'EGP', 'EUR', 'GBP']
+valutes = ['AUD', 'AZN', 'BYN',
+           'USD', 'JPY',
+           'DKK', 'AMD', 'EGP',
+           'EUR', 'GBP']
 yes, no = '✅', '❌'
 
 conn = sqlite3.connect('db/Currency_bot.db', check_same_thread=False)
@@ -33,4 +35,5 @@ def new_buttons_keyboard_def(user_id):
                                        callback_data=f"curr_{valutes[4 + 5 * i]}")]
         keyboard_main.add(*buttons)
     keyboard_main.add(types.InlineKeyboardButton(f'Назад', callback_data='profile'))
+
     return keyboard_main

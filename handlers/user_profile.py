@@ -12,7 +12,7 @@ cursor = conn.cursor()
 async def profile_main_page(call: types.CallbackQuery):
     keyboard = profile_main_page_keyboard.profile_main_keyboard_def()
     user_id = call.from_user.username
-    data = cursor.execute(f"SELECT id, name, user_name, lastrequest FROM users WHERE name='{user_id}'").fetchall()[0]
+    data = cursor.execute(f"SELECT id, name, user_name, last_request FROM users WHERE name='{user_id}'").fetchall()[0]
     id = data[0]
     tg = data[1]
     name = data[2]
