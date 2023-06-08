@@ -9,24 +9,31 @@ cursor = conn.cursor()
 
 class User_Dates(StatesGroup):
     waiting_origin_value = State()
-    waiting_goal_value = State()
+    name_changing = State()
 
 
 async def start(message: types.Message):
-    id = [str(i) for i in cursor.execute("SELECT id FROM users").fetchall()]
-    user_id = message.from_user.username
-    user_id_check = f'(\'{user_id}\',)'
-    if user_id_check not in id:
-        cursor.execute('INSERT INTO users (id) VALUES (?)',
-                       (user_id, ))
+    id = [str(i) for i in cursor.execute("SELECT name FROM users").fetchall()]
+    user_name = message.from_user.username
+    user_id = message.from_user.id
+    user_name_check = f'(\'{user_name}\',)'
+    if user_name_check not in id:
+        cursor.execute('INSERT INTO users (id, name, custom_buttons) VALUES (?, ?, ?)',
+                       (user_id, user_name, '0001100011'))
         conn.commit()
+    data = cursor.execute(f"SELECT user_name FROM users WHERE name='{user_name}'").fetchall()[0]
+    print(data)
+    name = data[0]
     keyboard = main_keyboard.main_keyboard_def()
-    await message.answer(f"Привет, @{user_id}!\n",
-                         reply_markup=keyboard)
+    if 'None' in str(name):
+        await message.answer(f"Привет, @{user_name}!\n", reply_markup=keyboard)
+    else:
+        await message.answer(f'Привет, {name}', reply_markup=keyboard)
+
 
 
 async def help(message: types.Message):
-    await message.answer("Выбери через кнопки какие валюты будем конвертировать!")
+    await message.answer("Тут будет помощь!")
 
 
 def register_handlers_user(dp: Dispatcher):
