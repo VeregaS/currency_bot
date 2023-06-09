@@ -1,4 +1,3 @@
-import asyncio
 from aiogram.utils import executor
 from start_bot import dp
 from handlers import user, set_values, user_profile
